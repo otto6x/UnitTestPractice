@@ -35,10 +35,12 @@ bool Password::has_mixed_case(string phrase){
       hasUpper = true;
   }
 
-  if(hasLower && hasUpper)
-    return true;
-  else 
-    return false;
+  if(hasLower){
+    if(hasUpper){
+      return true;
+    }
+  } 
+  return false;
 }
 
 /*
@@ -57,8 +59,14 @@ Password::Password(){
     4. It was not a previous password in the history
 */
 void Password::set(string phrase){
-  if(phrase.length() >= 8 && count_leading_characters(phrase) <= 3 && has_mixed_case(phrase) && phrase != pass_history.back()){
-    pass_history.push_back(phrase);
+  if(phrase.length() >= 8){
+    if(count_leading_characters(phrase) <= 3){
+      if(has_mixed_case(phrase)){
+        if(phrase != pass_history.back()){
+          pass_history.push_back(phrase);
+        }
+      }
+    }
   }
 }
 /*
@@ -69,7 +77,8 @@ void Password::set(string phrase){
 bool Password::authenticate(string phrase){
   if(pass_history.back() == "ChicoCA-95929"){
     return false;
-  }else if(pass_history.back() == phrase){
+  }
+  if(pass_history.back() == phrase){
     return true;
   }else{
     return false;
